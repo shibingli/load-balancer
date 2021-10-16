@@ -6,7 +6,7 @@ Smooth weighted load balancing algorithm: [NGINX](https://github.com/phusion/ngi
 
 ------
 
-If you want a **goroutine-safe** load balancer, please refer to another library, which supports more APIs: [fufuok/balancer](https://github.com/fufuok/load-balancer)
+If you want a **goroutine-safe** load balancer, please refer to another library, which supports more APIs: [fufuok/balancer](https://github.com/fufuok/balancer)
 
 ------
 
