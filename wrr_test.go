@@ -45,6 +45,8 @@ func TestWeightedRoundRobin(t *testing.T) {
 func TestWeightedRoundRobin_C(t *testing.T) {
 	var (
 		a, b, c, d int64
+		wg         sync.WaitGroup
+		mu         sync.Mutex
 	)
 	nodes := []*Choice{
 		{Item: "A", Weight: 5},
@@ -54,12 +56,12 @@ func TestWeightedRoundRobin_C(t *testing.T) {
 	}
 	lb := NewWeightedRoundRobin(nodes...)
 
-	var wg sync.WaitGroup
 	for i := 0; i < 500; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
 			for j := 0; j < 2000; j++ {
+				mu.Lock()
 				switch lb.Select() {
 				case "A":
 					atomic.AddInt64(&a, 1)
@@ -70,24 +72,22 @@ func TestWeightedRoundRobin_C(t *testing.T) {
 				case "D":
 					atomic.AddInt64(&d, 1)
 				}
+				mu.Unlock()
 			}
 		}()
 	}
 	wg.Wait()
 
-	if atomic.LoadInt64(&a) <= 400000 {
+	if atomic.LoadInt64(&a) != 500000 {
 		t.Fatal("wrr wrong: a", atomic.LoadInt64(&a))
 	}
-	if atomic.LoadInt64(&b) <= 40000 {
+	if atomic.LoadInt64(&b) != 100000 {
 		t.Fatal("wrr wrong: b", atomic.LoadInt64(&b))
 	}
-	if atomic.LoadInt64(&c) <= 300000 {
+	if atomic.LoadInt64(&c) != 400000 {
 		t.Fatal("wrr wrong: c", atomic.LoadInt64(&c))
 	}
 	if atomic.LoadInt64(&d) != 0 {
 		t.Fatal("wrr wrong: d", atomic.LoadInt64(&d))
-	}
-	if atomic.LoadInt64(&a)+atomic.LoadInt64(&b)+atomic.LoadInt64(&c) != 1000000 {
-		t.Fatal("wrr wrong: sum")
 	}
 }

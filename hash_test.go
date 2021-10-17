@@ -74,10 +74,7 @@ func TestConsistentHash(t *testing.T) {
 }
 
 func TestConsistentHash_C(t *testing.T) {
-	var (
-		c int64
-		item interface{}
-	)
+	var c int64
 	nodes := []*Choice{
 		{Item: "A"},
 		{Item: "B"},
@@ -92,7 +89,7 @@ func TestConsistentHash_C(t *testing.T) {
 		go func() {
 			defer wg.Done()
 			for j := 0; j < 2000; j++ {
-				switch item = lb.Select("192.168.1.7"); item {
+				switch lb.Select("192.168.1.7") {
 				case "C":
 					atomic.AddInt64(&c, 1)
 				default:
@@ -103,6 +100,6 @@ func TestConsistentHash_C(t *testing.T) {
 	wg.Wait()
 
 	if atomic.LoadInt64(&c) != 1000000 {
-		t.Fatalf("hash expected C == 1000000, actual C == %d, item: %s", atomic.LoadInt64(&c), item)
+		t.Fatalf("hash expected C == 1000000, actual C == %d, item: %s", atomic.LoadInt64(&c), lb.Select("192.168.1.7"))
 	}
 }
