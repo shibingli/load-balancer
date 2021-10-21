@@ -96,6 +96,8 @@ func TestRoundRobin_C(t *testing.T) {
 	}
 	wg.Wait()
 
+	t.Log(atomic.LoadInt64(&a), atomic.LoadInt64(&b), atomic.LoadInt64(&c), atomic.LoadInt64(&d))
+
 	if atomic.LoadInt64(&a) <= 200000 {
 		t.Fatal("rr wrong: a")
 	}

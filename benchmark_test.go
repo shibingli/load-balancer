@@ -13,151 +13,127 @@ const (
 
 func BenchmarkBalancer(b *testing.B) {
 	for n := numMin; n <= numMax; n *= 10 {
-		b.Run("WRR", func(b *testing.B) {
-			b.Run(strconv.Itoa(n), func(b *testing.B) {
-				choices := genChoices(n)
-				lb := NewWeightedRoundRobin(choices...)
-				b.ResetTimer()
-				for i := 0; i < b.N; i++ {
-					lb.Select()
-				}
-			})
+		b.Run("WRR-"+strconv.Itoa(n), func(b *testing.B) {
+			choices := genChoices(n)
+			lb := NewWeightedRoundRobin(choices...)
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				lb.Select()
+			}
 		})
 
-		b.Run("SWRR", func(b *testing.B) {
-			b.Run(strconv.Itoa(n), func(b *testing.B) {
-				choices := genChoices(n)
-				lb := NewSmoothWeightedRoundRobin(choices...)
-				b.ResetTimer()
-				for i := 0; i < b.N; i++ {
-					lb.Select()
-				}
-			})
+		b.Run("SWRR-"+strconv.Itoa(n), func(b *testing.B) {
+			choices := genChoices(n)
+			lb := NewSmoothWeightedRoundRobin(choices...)
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				lb.Select()
+			}
 		})
 
-		b.Run("WR", func(b *testing.B) {
-			b.Run(strconv.Itoa(n), func(b *testing.B) {
-				choices := genChoices(n)
-				lb := NewWeightedRand(choices...)
-				b.ResetTimer()
-				for i := 0; i < b.N; i++ {
-					lb.Select()
-				}
-			})
+		b.Run("WR-"+strconv.Itoa(n), func(b *testing.B) {
+			choices := genChoices(n)
+			lb := NewWeightedRand(choices...)
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				lb.Select()
+			}
 		})
 
-		b.Run("Hash", func(b *testing.B) {
-			b.Run(strconv.Itoa(n), func(b *testing.B) {
-				choices := genChoices(n)
-				lb := NewConsistentHash(choices...)
-				b.ResetTimer()
-				for i := 0; i < b.N; i++ {
-					lb.Select("192.168.1.1")
-				}
-			})
+		b.Run("Hash-"+strconv.Itoa(n), func(b *testing.B) {
+			choices := genChoices(n)
+			lb := NewConsistentHash(choices...)
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				lb.Select("192.168.1.1")
+			}
 		})
 
-		b.Run("RoundRobin", func(b *testing.B) {
-			b.Run(strconv.Itoa(n), func(b *testing.B) {
-				choices := genChoices(n)
-				lb := NewRoundRobin(choices...)
-				b.ResetTimer()
-				for i := 0; i < b.N; i++ {
-					lb.Select()
-				}
-			})
+		b.Run("RoundRobin-"+strconv.Itoa(n), func(b *testing.B) {
+			choices := genChoices(n)
+			lb := NewRoundRobin(choices...)
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				lb.Select()
+			}
 		})
 
-		b.Run("Random", func(b *testing.B) {
-			b.Run(strconv.Itoa(n), func(b *testing.B) {
-				choices := genChoices(n)
-				lb := NewRandom(choices...)
-				b.ResetTimer()
-				for i := 0; i < b.N; i++ {
-					lb.Select()
-				}
-			})
+		b.Run("Random-"+strconv.Itoa(n), func(b *testing.B) {
+			choices := genChoices(n)
+			lb := NewRandom(choices...)
+			b.ResetTimer()
+			for i := 0; i < b.N; i++ {
+				lb.Select()
+			}
 		})
 	}
 }
 
 func BenchmarkBalancerParallel(b *testing.B) {
 	for n := numMin; n <= numMax; n *= 10 {
-		b.Run("WRR", func(b *testing.B) {
-			b.Run(strconv.Itoa(n), func(b *testing.B) {
-				choices := genChoices(n)
-				lb := NewWeightedRoundRobin(choices...)
-				b.ResetTimer()
-				b.RunParallel(func(pb *testing.PB) {
-					for pb.Next() {
-						lb.Select()
-					}
-				})
+		b.Run("WRR-"+strconv.Itoa(n), func(b *testing.B) {
+			choices := genChoices(n)
+			lb := NewWeightedRoundRobin(choices...)
+			b.ResetTimer()
+			b.RunParallel(func(pb *testing.PB) {
+				for pb.Next() {
+					lb.Select()
+				}
 			})
 		})
 
-		b.Run("SWRR", func(b *testing.B) {
-			b.Run(strconv.Itoa(n), func(b *testing.B) {
-				choices := genChoices(n)
-				lb := NewSmoothWeightedRoundRobin(choices...)
-				b.ResetTimer()
-				b.RunParallel(func(pb *testing.PB) {
-					for pb.Next() {
-						lb.Select()
-					}
-				})
+		b.Run("SWRR-"+strconv.Itoa(n), func(b *testing.B) {
+			choices := genChoices(n)
+			lb := NewSmoothWeightedRoundRobin(choices...)
+			b.ResetTimer()
+			b.RunParallel(func(pb *testing.PB) {
+				for pb.Next() {
+					lb.Select()
+				}
 			})
 		})
 
-		b.Run("WR", func(b *testing.B) {
-			b.Run(strconv.Itoa(n), func(b *testing.B) {
-				choices := genChoices(n)
-				lb := NewWeightedRand(choices...)
-				b.ResetTimer()
-				b.RunParallel(func(pb *testing.PB) {
-					for pb.Next() {
-						lb.Select()
-					}
-				})
+		b.Run("WR-"+strconv.Itoa(n), func(b *testing.B) {
+			choices := genChoices(n)
+			lb := NewWeightedRand(choices...)
+			b.ResetTimer()
+			b.RunParallel(func(pb *testing.PB) {
+				for pb.Next() {
+					lb.Select()
+				}
 			})
 		})
 
-		b.Run("Hash", func(b *testing.B) {
-			b.Run(strconv.Itoa(n), func(b *testing.B) {
-				choices := genChoices(n)
-				lb := NewConsistentHash(choices...)
-				b.ResetTimer()
-				b.RunParallel(func(pb *testing.PB) {
-					for pb.Next() {
-						lb.Select("192.168.1.1")
-					}
-				})
+		b.Run("Hash-"+strconv.Itoa(n), func(b *testing.B) {
+			choices := genChoices(n)
+			lb := NewConsistentHash(choices...)
+			b.ResetTimer()
+			b.RunParallel(func(pb *testing.PB) {
+				for pb.Next() {
+					lb.Select("192.168.1.1")
+				}
 			})
 		})
 
-		b.Run("RoundRobin", func(b *testing.B) {
-			b.Run(strconv.Itoa(n), func(b *testing.B) {
-				choices := genChoices(n)
-				lb := NewRoundRobin(choices...)
-				b.ResetTimer()
-				b.RunParallel(func(pb *testing.PB) {
-					for pb.Next() {
-						lb.Select()
-					}
-				})
+		b.Run("RoundRobin-"+strconv.Itoa(n), func(b *testing.B) {
+			choices := genChoices(n)
+			lb := NewRoundRobin(choices...)
+			b.ResetTimer()
+			b.RunParallel(func(pb *testing.PB) {
+				for pb.Next() {
+					lb.Select()
+				}
 			})
 		})
 
-		b.Run("Random", func(b *testing.B) {
-			b.Run(strconv.Itoa(n), func(b *testing.B) {
-				choices := genChoices(n)
-				lb := NewRandom(choices...)
-				b.ResetTimer()
-				b.RunParallel(func(pb *testing.PB) {
-					for pb.Next() {
-						lb.Select()
-					}
-				})
+		b.Run("Random-"+strconv.Itoa(n), func(b *testing.B) {
+			choices := genChoices(n)
+			lb := NewRandom(choices...)
+			b.ResetTimer()
+			b.RunParallel(func(pb *testing.PB) {
+				for pb.Next() {
+					lb.Select()
+				}
 			})
 		})
 	}
@@ -179,86 +155,86 @@ func genChoices(n int) []*Choice {
 // goarch: amd64
 // pkg: github.com/fufuok/load-balancer
 // cpu: Intel(R) Xeon(R) Gold 6151 CPU @ 3.00GHz
-// BenchmarkBalancer/WRR/10-4                              42144165                25.84 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/SWRR/10-4                             69472514                15.81 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/WR/10-4                               50838763                22.90 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/Hash/10-4                             39170830                30.32 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/RoundRobin/10-4                       84562006                14.10 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/Random/10-4                          244497501                4.894 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/WRR-10-4                         46217316                25.75 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/SWRR-10-4                        77468209                15.27 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/WR-10-4                          52319631                22.49 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/Hash-10-4                        39925784                30.21 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/RoundRobin-10-4                  66584161                18.14 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/Random-10-4                     242458752                4.904 ns/op            0 B/op          0 allocs/op
 //
-// BenchmarkBalancer/WRR#01/100-4                          41521372                30.54 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/SWRR#01/100-4                          7069575                170.0 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/WR#01/100-4                           31241767                39.10 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/Hash#01/100-4                         31805023                37.79 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/RoundRobin#01/100-4                   84337191                14.24 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/Random#01/100-4                      245488258                4.919 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/WRR-100-4                        40734304                30.44 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/SWRR-100-4                        7942176                152.7 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/WR-100-4                         31176547                38.46 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/Hash-100-4                       31901799                38.02 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/RoundRobin-100-4                 66206282                18.05 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/Random-100-4                    244788913                4.885 ns/op            0 B/op          0 allocs/op
 //
-// BenchmarkBalancer/WRR#02/1000-4                         34251942                34.42 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/SWRR#02/1000-4                          881721                 1368 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/WR#02/1000-4                          19458044                61.63 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/Hash#02/1000-4                        23156967                51.16 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/RoundRobin#02/1000-4                  84485420                14.14 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/Random#02/1000-4                     232620525                5.089 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/WRR-1000-4                       34538292                34.18 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/SWRR-1000-4                        843820                 1320 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/WR-1000-4                        20156709                59.92 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/Hash-1000-4                      23270704                51.25 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/RoundRobin-1000-4                66487467                18.08 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/Random-1000-4                   221386104                5.098 ns/op            0 B/op          0 allocs/op
 //
-// BenchmarkBalancer/WRR#03/10000-4                        34250386                34.62 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/SWRR#03/10000-4                          89247                13367 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/WR#03/10000-4                         14632105                82.15 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/Hash#03/10000-4                       19206060                62.69 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/RoundRobin#03/10000-4                 84202992                14.34 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/Random#03/10000-4                    190687468                6.350 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/WRR-10000-4                      34621371                34.29 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/SWRR-10000-4                        88591                14274 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/WR-10000-4                       14898531                81.10 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/Hash-10000-4                     19238934                62.80 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/RoundRobin-10000-4               66228592                18.31 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/Random-10000-4                  191338644                6.872 ns/op            0 B/op          0 allocs/op
 //
-// BenchmarkBalancer/WRR#04/100000-4                       30741852                35.02 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/SWRR#04/100000-4                          6874               168835 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/WR#04/100000-4                        10501063                114.3 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/Hash#04/100000-4                      19062961                62.45 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/RoundRobin#04/100000-4                84166652                14.15 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/Random#04/100000-4                    90442380                12.92 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/WRR-100000-4                     30867440                34.63 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/SWRR-100000-4                        6897               173933 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/WR-100000-4                      10732960                111.6 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/Hash-100000-4                    19251387                62.78 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/RoundRobin-100000-4              65002867                18.33 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/Random-100000-4                  88514517                13.07 ns/op            0 B/op          0 allocs/op
 //
-// BenchmarkBalancer/WRR#05/1000000-4                      28341630                35.50 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/SWRR#05/1000000-4                          358              3273492 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/WR#05/1000000-4                        5127837                237.4 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/Hash#05/1000000-4                     19134792                62.62 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/RoundRobin#05/1000000-4               83314928                14.55 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancer/Random#05/1000000-4                   24208584                42.61 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/WRR-1000000-4                    28559396                36.27 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/SWRR-1000000-4                        363              3264391 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/WR-1000000-4                      4875242                238.9 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/Hash-1000000-4                   19132564                62.31 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/RoundRobin-1000000-4             64232452                18.44 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancer/Random-1000000-4                 25495011                45.96 ns/op            0 B/op          0 allocs/op
 //
-// BenchmarkBalancerParallel/WRR/10-4                      17618566                68.15 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/SWRR/10-4                      5395550                227.7 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/WR/10-4                      212595266                6.172 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/Hash/10-4                    150920656                8.051 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/RoundRobin/10-4               42911876                28.01 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/Random/10-4                  204149901                5.905 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/WRR-10-4                 18472707                67.69 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/SWRR-10-4                 4228370                283.4 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/WR-10-4                 208656978                6.016 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/Hash-10-4               144690333                8.001 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/RoundRobin-10-4          19509270                61.33 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/Random-10-4             919527031                1.331 ns/op            0 B/op          0 allocs/op
 //
-// BenchmarkBalancerParallel/WRR#01/100-4                  18904735                67.70 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/SWRR#01/100-4                  1308855                906.3 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/WR#01/100-4                  117712749                10.34 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/Hash#01/100-4                122846144                12.29 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/RoundRobin#01/100-4           41949963                28.52 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/Random#01/100-4              239025558                6.297 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/WRR-100-4                19207489                66.60 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/SWRR-100-4                1311392                899.7 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/WR-100-4                100000000                10.26 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/Hash-100-4              120191985                9.945 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/RoundRobin-100-4         18468038                62.90 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/Random-100-4            921913453                1.324 ns/op            0 B/op          0 allocs/op
 //
-// BenchmarkBalancerParallel/WRR#02/1000-4                 17478133                68.95 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/SWRR#02/1000-4                  442495                 2562 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/WR#02/1000-4                  74902462                16.06 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/Hash#02/1000-4                80515016                13.98 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/RoundRobin#02/1000-4          40136712                28.31 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/Random#02/1000-4             197248365                6.224 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/WRR-1000-4               17837187                68.50 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/SWRR-1000-4                534634                 2184 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/WR-1000-4                78022376                15.89 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/Hash-1000-4              87318837                13.83 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/RoundRobin-1000-4        18960835                61.85 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/Random-1000-4           214012765                5.450 ns/op            0 B/op          0 allocs/op
 //
-// BenchmarkBalancerParallel/WRR#03/10000-4                18417727                65.07 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/SWRR#03/10000-4                 169377                 7086 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/WR#03/10000-4                 56400831                21.39 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/Hash#03/10000-4               68102100                18.25 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/RoundRobin#03/10000-4         42354654                28.36 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/Random#03/10000-4            194200598                6.835 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/WRR-10000-4              17449467                65.24 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/SWRR-10000-4               164738                 7878 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/WR-10000-4               56703684                20.90 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/Hash-10000-4             71464341                17.37 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/RoundRobin-10000-4       19946966                59.33 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/Random-10000-4          179242167                6.321 ns/op            0 B/op          0 allocs/op
 //
-// BenchmarkBalancerParallel/WRR#04/100000-4               18112053                66.78 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/SWRR#04/100000-4                 17480                68866 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/WR#04/100000-4                41026820                29.49 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/Hash#04/100000-4              72594279                17.00 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/RoundRobin#04/100000-4        42061038                28.44 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/Random#04/100000-4           121176079                9.707 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/WRR-100000-4             17843058                63.60 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/SWRR-100000-4               17827                66743 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/WR-100000-4              41696436                29.32 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/Hash-100000-4            71783467                16.66 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/RoundRobin-100000-4      18777990                59.97 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/Random-100000-4         130029762                9.360 ns/op            0 B/op          0 allocs/op
 //
-// BenchmarkBalancerParallel/WRR#05/1000000-4              18719948                70.35 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/SWRR#05/1000000-4                 1460               853531 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/WR#05/1000000-4               19019304                63.41 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/Hash#05/1000000-4             70520688                16.77 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/RoundRobin#05/1000000-4       42368685                28.18 ns/op            0 B/op          0 allocs/op
-// BenchmarkBalancerParallel/Random#05/1000000-4           76504468                13.82 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/WRR-1000000-4            12799609                78.48 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/SWRR-1000000-4               1447               853293 ns/op            1 B/op          0 allocs/op
+// BenchmarkBalancerParallel/WR-1000000-4             19860668                58.98 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/Hash-1000000-4           72376710                16.90 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/RoundRobin-1000000-4     19127218                62.03 ns/op            0 B/op          0 allocs/op
+// BenchmarkBalancerParallel/Random-1000000-4         75088678                14.43 ns/op            0 B/op          0 allocs/op
