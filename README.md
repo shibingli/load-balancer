@@ -4,11 +4,11 @@ High-performance general load balancing algorithm library, non-goroutine-safe.
 
 Smooth weighted load balancing algorithm: [NGINX](https://github.com/phusion/nginx/commit/27e94984486058d73157038f7950a0a36ecc6e35) and [LVS](http://kb.linuxvirtualserver.org/wiki/Weighted_Round-Robin_Scheduling), Doublejump provides a revamped Google's jump consistent hash.
 
-------
+---
 
 If you want a **goroutine-safe** load balancer, please refer to another library, which supports more APIs: [fufuok/balancer](https://github.com/fufuok/balancer)
 
-------
+---
 
 ## 🎯 Features
 
@@ -22,7 +22,7 @@ If you want a **goroutine-safe** load balancer, please refer to another library,
 ## ⚙️ Installation
 
 ```go
-go get -u github.com/fufuok/load-balancer
+go get -u github.com/shibingli/load-balancer
 ```
 
 ## ⚡️ Quickstart
@@ -33,7 +33,7 @@ package main
 import (
 	"fmt"
 
-	balancer "github.com/fufuok/load-balancer"
+	balancer "github.com/shibingli/load-balancer"
 )
 
 func main() {
@@ -107,14 +107,14 @@ choices = []*balancer.Choice{
    ```go
    var lb balancer.Balancer
    lb = balancer.New(balancer.WeightedRoundRobin, choices)
-   
+
    // or
    lb = balancer.New(balancer.WeightedRoundRobin, nil)
    lb.Update(choices)
-   
+
    // or
    lb = balancer.NewWeightedRoundRobin(choices...)
-   
+
    // or
    lb = balancer.NewWeightedRoundRobin()
    lb.Update(choices)
@@ -125,14 +125,14 @@ choices = []*balancer.Choice{
    ```go
    var lb balancer.Balancer
    lb = balancer.New(balancer.SmoothWeightedRoundRobin, choices)
-   
+
    // or
    lb = balancer.New(balancer.SmoothWeightedRoundRobin, nil)
    lb.Update(choices)
-   
+
    // or
    lb = balancer.NewSmoothWeightedRoundRobin(choices...)
-   
+
    // or
    lb = balancer.NewSmoothWeightedRoundRobin()
    lb.Update(choices)
@@ -143,14 +143,14 @@ choices = []*balancer.Choice{
    ```go
    var lb balancer.Balancer
    lb = balancer.New(balancer.WeightedRand, choices)
-   
+
    // or
    lb = balancer.New(balancer.WeightedRand, nil)
    lb.Update(choices)
-   
+
    // or
    lb = balancer.NewWeightedRand(choices...)
-   
+
    // or
    lb = balancer.NewWeightedRand()
    lb.Update(choices)
@@ -161,14 +161,14 @@ choices = []*balancer.Choice{
    ```go
    var lb balancer.Balancer
    lb = balancer.New(balancer.ConsistentHash, choices)
-   
+
    // or
    lb = balancer.New(balancer.ConsistentHash, nil)
    lb.Update(choices)
-   
+
    // or
    lb = balancer.NewConsistentHash(choices...)
-   
+
    // or
    lb = balancer.NewConsistentHash()
    lb.Update(choices)
@@ -179,14 +179,14 @@ choices = []*balancer.Choice{
    ```go
    var lb balancer.Balancer
    lb = balancer.New(balancer.RoundRobin, choices)
-   
+
    // or
    lb = balancer.New(balancer.RoundRobin, nil)
    lb.Update(choices)
-   
+
    // or
    lb = balancer.NewRoundRobin(choices...)
-   
+
    // or
    lb = balancer.NewRoundRobin()
    lb.Update(choices)
@@ -197,14 +197,14 @@ choices = []*balancer.Choice{
    ```go
    var lb balancer.Balancer
    lb = balancer.New(balancer.Random, choices)
-   
+
    // or
    lb = balancer.New(balancer.Random, nil)
    lb.Update(choices)
-   
+
    // or
    lb = balancer.NewRandom(choices...)
-   
+
    // or
    lb = balancer.NewRandom()
    lb.Update(choices)
@@ -351,8 +351,4 @@ Third-party library licenses:
 - [doublejump]([doublejump/LICENSE at master · edwingeng/doublejump (github.com)](https://github.com/edwingeng/doublejump/blob/master/LICENSE))
 - [go-jump]([go-jump/LICENSE at master · dgryski/go-jump (github.com)](https://github.com/dgryski/go-jump/blob/master/LICENSE))
 
-
-
-
-
-*ff*
+_ff_
