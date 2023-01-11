@@ -1,8 +1,8 @@
 package balancer
 
 import (
-	"github.com/fufuok/load-balancer/internal/doublejump"
-	"github.com/fufuok/load-balancer/utils"
+	"github.com/shibingli/load-balancer/internal/doublejump"
+	"github.com/shibingli/load-balancer/utils"
 )
 
 // JumpConsistentHash

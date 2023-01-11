@@ -1,7 +1,7 @@
 package balancer
 
 import (
-	"github.com/fufuok/load-balancer/utils"
+	"github.com/shibingli/load-balancer/utils"
 )
 
 // Weighted Round-Robin Scheduling

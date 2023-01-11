@@ -3,7 +3,7 @@ package balancer
 import (
 	"sort"
 
-	"github.com/fufuok/load-balancer/utils"
+	"github.com/shibingli/load-balancer/utils"
 )
 
 // WeightedRand

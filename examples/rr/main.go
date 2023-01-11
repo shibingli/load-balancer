@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	balancer "github.com/fufuok/load-balancer"
+	balancer "github.com/shibingli/load-balancer"
 )
 
 func main() {

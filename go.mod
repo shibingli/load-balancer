@@ -1,3 +1,3 @@
-module github.com/fufuok/load-balancer
+module github.com/shibingli/load-balancer
 
-go 1.15
+go 1.19
