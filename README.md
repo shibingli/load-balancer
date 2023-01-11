@@ -22,7 +22,7 @@ If you want a **goroutine-safe** load balancer, please refer to another library,
 ## ⚙️ Installation
 
 ```go
-go get -u github.com/shibingli/load-balancer
+go get -u -v github.com/shibingli/load-balancer
 ```
 
 ## ⚡️ Quickstart
